@@ -1,0 +1,31 @@
+[project]
+name = "ditado"
+version = "0.1.0"
+description = "Ditado por voz local (faster-whisper) para o GNOME no Wayland: atalho, fala, texto colado onde está o cursor."
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Leandro Queiroz" }]
+requires-python = ">=3.12"
+dependencies = ["faster-whisper==1.2.1"]
+keywords = ["ditado", "dictation", "speech-to-text", "whisper", "faster-whisper", "gnome", "wayland", "portugues"]
+classifiers = [
+    "Environment :: X11 Applications :: Gnome",
+    "Natural Language :: Portuguese (Brazilian)",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Topic :: Multimedia :: Sound/Audio :: Speech",
+]
+
+[project.urls]
+Repository = "https://github.com/leandro-queiroz/ditado"
+
+[project.scripts]
+ditado = "ditado.cli:main"
+
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["ditado"]

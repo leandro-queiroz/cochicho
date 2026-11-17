@@ -1,0 +1,13 @@
+[Unit]
+Description=Ditado por voz local (faster-whisper)
+PartOf=graphical-session.target
+After=graphical-session.target pipewire.service
+
+[Service]
+ExecStart=@VENV@/bin/ditado servidor
+Environment=HF_HUB_DISABLE_TELEMETRY=1
+Restart=on-failure
+RestartSec=3
+
+[Install]
+WantedBy=graphical-session.target

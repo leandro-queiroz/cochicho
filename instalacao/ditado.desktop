@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Ditado
+Comment=Ditado por voz local (Whisper)
+Exec=@VENV@/bin/ditado alternar
+Icon=audio-input-microphone
+Terminal=false
+NoDisplay=true

@@ -1,0 +1,28 @@
+# Configuração do ditado (~/.config/ditado/config.toml).
+# Vale a partir do próximo ditado, sem reiniciar nada; trocar o modelo ou as threads recarrega o modelo sozinho.
+
+# Modelo do Whisper (espera depois de parar de falar, num i7-1165G7 com 4 threads):
+#   "large-v3-turbo"  ~5,5 s  o melhor, com pontuação (padrão)
+#   "medium"          ~5 s    bom, pontua menos
+#   "small"           ~2 s    rápido, mas troca palavras
+modelo = "large-v3-turbo"
+threads = 4   # use o número de núcleos físicos; no i7-1165G7, 4 rende mais que 8
+beam = 5      # 1 é uns 0,3 s mais rápido e um pouco menos estável
+
+# Tecla de colar mandada para a janela em foco:
+#   "ctrl+shift+v"  terminal (Terminator, Claude Code) e navegador (no Chrome cola como texto simples)
+#   "ctrl+v"        demais apps (LibreOffice, VS Code: lá o Ctrl+Shift+V faz outra coisa)
+#   "nenhum"        só copia; você cola
+colar_com = "ctrl+shift+v"
+
+sons = true          # sons curtos ao começar e ao colar
+historico = true     # guarda os ditados em ~/.local/share/ditado/historico.jsonl (só nesta máquina)
+max_segundos = 300   # para sozinho depois disso
+
+# Frase de contexto: ajuda o Whisper a pontuar e a escrever certo os nomes e termos que você usa.
+# Troque pelos termos, nomes e siglas que você mais fala.
+contexto = "Ditado em português do Brasil, com pontuação. Termos que aparecem: Claude Code, GitHub, commit, deploy, Python, Linux."
+
+# Trocas feitas depois da transcrição (sem diferenciar maiúsculas; só palavra inteira).
+[substituicoes]
+"cloud code" = "Claude Code"
