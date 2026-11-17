@@ -1,4 +1,4 @@
-# Configuração do ditado (~/.config/ditado/config.toml).
+# Configuração do cochicho (~/.config/cochicho/config.toml).
 # Vale a partir do próximo ditado, sem reiniciar nada; trocar o modelo ou as threads recarrega o modelo sozinho.
 
 # Modelo do Whisper (espera depois de parar de falar, num i7-1165G7 com 4 threads):
@@ -16,7 +16,7 @@ beam = 5      # 1 é uns 0,3 s mais rápido e um pouco menos estável
 colar_com = "ctrl+shift+v"
 
 sons = true          # sons curtos ao começar e ao colar
-historico = true     # guarda os ditados em ~/.local/share/ditado/historico.jsonl (só nesta máquina)
+historico = true     # guarda os ditados em ~/.local/share/cochicho/historico.jsonl (só nesta máquina)
 max_segundos = 300   # para sozinho depois disso
 
 # Frase de contexto: ajuda o Whisper a pontuar e a escrever certo os nomes e termos que você usa.

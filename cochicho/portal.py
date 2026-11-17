@@ -3,7 +3,7 @@ mandar tecla para outra janela no GNOME com Wayland.
 
 Roda como processo separado, chamado pelo servidor:
 
-    python -m ditado.portal ctrl+shift+v ~/.local/share/ditado/portal-token
+    python -m cochicho.portal ctrl+shift+v ~/.local/share/cochicho/portal-token
 
 Assim um portal travado não prende o servidor. Na primeira vez o GNOME pergunta se permite o controle; a resposta
 fica guardada num restore_token, que só vale uma vez e é trocado a cada uso (persist_mode 2, até revogar).
@@ -46,7 +46,7 @@ class Portal:
     def pedir(self, metodo: str, montar, espera_s: int) -> dict:
         """Chama um método que responde pelo sinal Request.Response e espera a resposta."""
         self.contador += 1
-        handle = f"ditado{os.getpid()}_{self.contador}"
+        handle = f"cochicho{os.getpid()}_{self.contador}"
         caminho = f"/org/freedesktop/portal/desktop/request/{self.remetente}/{handle}"
         loop = GLib.MainLoop()
         resposta = []
@@ -102,7 +102,7 @@ def apertar(combinacao: str, arquivo_token: Path) -> None:
     p = Portal()
 
     def criar(o):
-        o["session_handle_token"] = GLib.Variant("s", f"ditado{os.getpid()}")
+        o["session_handle_token"] = GLib.Variant("s", f"cochicho{os.getpid()}")
         return GLib.Variant("(a{sv})", (o,))
 
     sessao = p.pedir("CreateSession", criar, 15)["session_handle"]
@@ -133,7 +133,7 @@ def apertar(combinacao: str, arquivo_token: Path) -> None:
 
 def main() -> int:
     if len(sys.argv) != 3:
-        print("uso: python -m ditado.portal <ctrl+shift+v> <arquivo-do-token>", file=sys.stderr)
+        print("uso: python -m cochicho.portal <ctrl+shift+v> <arquivo-do-token>", file=sys.stderr)
         return 4
     try:
         apertar(sys.argv[1], Path(sys.argv[2]))

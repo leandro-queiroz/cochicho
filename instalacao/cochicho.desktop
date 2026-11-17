@@ -1,8 +1,8 @@
 [Desktop Entry]
 Type=Application
-Name=Ditado
+Name=Cochicho
 Comment=Ditado por voz local (Whisper)
-Exec=@VENV@/bin/ditado alternar
+Exec=@VENV@/bin/cochicho alternar
 Icon=audio-input-microphone
 Terminal=false
 NoDisplay=true

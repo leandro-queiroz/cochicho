@@ -1,4 +1,4 @@
-"""Caminhos e configuração: ~/.config/ditado/config.toml por cima dos valores padrão.
+"""Caminhos e configuração: ~/.config/cochicho/config.toml por cima dos valores padrão.
 
 Sem dependências pesadas: o cliente do atalho também importa este módulo.
 """
@@ -8,12 +8,12 @@ import tomllib
 from dataclasses import dataclass, field, fields
 from pathlib import Path
 
-CONFIG_DIR = Path(os.environ.get("XDG_CONFIG_HOME") or Path.home() / ".config") / "ditado"
-DADOS_DIR = Path(os.environ.get("XDG_DATA_HOME") or Path.home() / ".local/share") / "ditado"
+CONFIG_DIR = Path(os.environ.get("XDG_CONFIG_HOME") or Path.home() / ".config") / "cochicho"
+DADOS_DIR = Path(os.environ.get("XDG_DATA_HOME") or Path.home() / ".local/share") / "cochicho"
 RUNTIME_DIR = Path(os.environ.get("XDG_RUNTIME_DIR") or f"/run/user/{os.getuid()}")
 
 ARQUIVO_CONFIG = CONFIG_DIR / "config.toml"
-SOCKET = RUNTIME_DIR / "ditado.sock"
+SOCKET = RUNTIME_DIR / "cochicho.sock"
 HISTORICO = DADOS_DIR / "historico.jsonl"
 TOKEN_PORTAL = DADOS_DIR / "portal-token"
 

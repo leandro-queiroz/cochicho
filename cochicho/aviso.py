@@ -46,13 +46,13 @@ class Avisos:
     def _notificar(self, titulo, corpo="", icone="audio-input-microphone", urgencia=1, acoes=(), transitorio=False):
         dicas = {
             "urgency": GLib.Variant("y", urgencia),
-            "desktop-entry": GLib.Variant("s", "ditado"),
+            "desktop-entry": GLib.Variant("s", "cochicho"),
             "transient": GLib.Variant("b", transitorio),
         }
         try:
             r = self._bus.call_sync(
                 DESTINO, CAMINHO, DESTINO, "Notify",
-                GLib.Variant("(susssasa{sv}i)", ("Ditado", self._id, icone, titulo, corpo, list(acoes), dicas, -1)),
+                GLib.Variant("(susssasa{sv}i)", ("Cochicho", self._id, icone, titulo, corpo, list(acoes), dicas, -1)),
                 GLib.VariantType("(u)"), Gio.DBusCallFlags.NONE, 2000, None,
             )
             self._id = r.unpack()[0]
@@ -95,7 +95,7 @@ class Avisos:
                         icone="microphone-sensitivity-muted-symbolic", transitorio=True)
 
     def erro(self, mensagem: str):
-        self._notificar("Ditado: erro", mensagem, icone="dialog-error-symbolic", transitorio=True)
+        self._notificar("Cochicho: erro", mensagem, icone="dialog-error-symbolic", transitorio=True)
 
     def info(self, titulo: str, corpo: str = ""):
         self._notificar(titulo, corpo, transitorio=True)

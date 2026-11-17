@@ -1,4 +1,4 @@
-"""Comando `ditado`. O atalho do GNOME chama `ditado alternar`; o systemd chama `ditado servidor`.
+"""Comando `cochicho`. O atalho do GNOME chama `cochicho alternar`; o systemd chama `cochicho servidor`.
 
 Os comandos de cliente só falam com o socket: nada pesado é importado, para o atalho responder na hora.
 """
@@ -11,7 +11,7 @@ import time
 
 from . import config
 
-AJUDA = """uso: ditado <comando>
+AJUDA = """uso: cochicho <comando>
 
   alternar       começa a gravar; se já está gravando, para, transcreve e cola (é o que o atalho chama)
   cancelar       descarta o ditado em curso
@@ -20,7 +20,7 @@ AJUDA = """uso: ditado <comando>
   testar-colar   daqui a 3 s cola uma frase de teste onde estiver o cursor
                  (na primeira vez o GNOME pede permissão para o controle do teclado)
   historico [n]  mostra os últimos n ditados (padrão 10)
-  servidor       roda o servidor; quem chama é o systemd (systemctl --user start ditado)
+  servidor       roda o servidor; quem chama é o systemd (systemctl --user start cochicho)
 """
 
 COMANDOS_DO_SERVIDOR = {"alternar", "cancelar", "estado", "ultimo", "testar-colar"}
@@ -38,7 +38,7 @@ def enviar(comando: str) -> str:
             if tentativa:
                 raise
             # servidor fora do ar: pede ao systemd e espera o socket aparecer
-            subprocess.run(["systemctl", "--user", "start", "ditado.service"], check=False,
+            subprocess.run(["systemctl", "--user", "start", "cochicho.service"], check=False,
                            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
             for _ in range(50):
                 if config.SOCKET.exists():
@@ -78,9 +78,9 @@ def main() -> int:
             print(enviar(comando))
             return 0
         except OSError as e:
-            mensagem = f"O servidor do ditado não respondeu ({e}). Veja: journalctl --user -u ditado"
+            mensagem = f"O servidor do cochicho não respondeu ({e}). Veja: journalctl --user -u cochicho"
             print(mensagem, file=sys.stderr)
-            subprocess.run(["notify-send", "-a", "Ditado", "Ditado: servidor fora do ar", mensagem], check=False)
+            subprocess.run(["notify-send", "-a", "Cochicho", "Cochicho: servidor fora do ar", mensagem], check=False)
             return 1
     print(AJUDA, file=sys.stderr)
     return 2

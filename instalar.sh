@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Instala o ditado para o usuário atual: ambiente Python, serviço do systemd, atalho do GNOME.
+# Instala o cochicho para o usuário atual: ambiente Python, serviço do systemd, atalho do GNOME.
 # Pode rodar de novo: só refaz o que faltar e atualiza o serviço e o atalho.
 # Atalho diferente: ATALHO='<Super>h' ./instalar.sh
 set -euo pipefail
@@ -22,17 +22,17 @@ if [[ ! -x "$VENV/bin/python" ]]; then
 fi
 uv pip install --python "$VENV/bin/python" --quiet -e "$PASTA"
 
-mkdir -p ~/.config/ditado ~/.config/systemd/user ~/.local/share/applications
-[[ -f ~/.config/ditado/config.toml ]] || cp "$PASTA/config.exemplo.toml" ~/.config/ditado/config.toml
+mkdir -p ~/.config/cochicho ~/.config/systemd/user ~/.local/share/applications
+[[ -f ~/.config/cochicho/config.toml ]] || cp "$PASTA/config.exemplo.toml" ~/.config/cochicho/config.toml
 
-sed "s|@VENV@|$VENV|g" "$PASTA/instalacao/ditado.service" > ~/.config/systemd/user/ditado.service
-sed "s|@VENV@|$VENV|g" "$PASTA/instalacao/ditado.desktop" > ~/.local/share/applications/ditado.desktop
+sed "s|@VENV@|$VENV|g" "$PASTA/instalacao/cochicho.service" > ~/.config/systemd/user/cochicho.service
+sed "s|@VENV@|$VENV|g" "$PASTA/instalacao/cochicho.desktop" > ~/.local/share/applications/cochicho.desktop
 systemctl --user daemon-reload
-systemctl --user enable ditado.service >/dev/null 2>&1
-systemctl --user restart ditado.service
+systemctl --user enable cochicho.service >/dev/null 2>&1
+systemctl --user restart cochicho.service
 
-# Atalho personalizado do GNOME: reaproveita o do ditado se existir, senão cria um novo.
-/usr/bin/python3 - "$VENV/bin/ditado alternar" "$ATALHO" <<'PY'
+# Atalho personalizado do GNOME: reaproveita o do cochicho se existir, senão cria um novo.
+/usr/bin/python3 - "$VENV/bin/cochicho alternar" "$ATALHO" <<'PY'
 import ast, subprocess, sys
 
 comando, atalho = sys.argv[1], sys.argv[2]
@@ -52,7 +52,7 @@ alvo = None
 for c in caminhos:
     nome = ast.literal_eval(get(esquema(c), "name"))
     cmd = ast.literal_eval(get(esquema(c), "command"))
-    if nome == "Ditado" or "ditado alternar" in cmd:
+    if nome == "Cochicho" or "cochicho alternar" in cmd:
         alvo = c
         break
 if alvo is None:
@@ -61,10 +61,10 @@ if alvo is None:
         n += 1
     alvo = f"{BASE}custom{n}/"
     setar(LISTA, "custom-keybindings", str(caminhos + [alvo]))
-setar(esquema(alvo), "name", "'Ditado'")
+setar(esquema(alvo), "name", "'Cochicho'")
 setar(esquema(alvo), "command", repr(comando))
 setar(esquema(alvo), "binding", repr(atalho))
 print(f"atalho {atalho} -> {comando} ({alvo})")
 PY
 
-echo "Pronto. Teste a colagem (pede a permissão do GNOME na primeira vez): $VENV/bin/ditado testar-colar"
+echo "Pronto. Teste a colagem (pede a permissão do GNOME na primeira vez): $VENV/bin/cochicho testar-colar"

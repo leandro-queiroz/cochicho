@@ -1,4 +1,4 @@
-"""Servidor do ditado: mantém o modelo na memória e atende o atalho por um socket Unix.
+"""Servidor do cochicho: mantém o modelo na memória e atende o atalho por um socket Unix.
 
 Estados: parado -> (alternar) gravando -> (alternar) transcrevendo -> parado.
 """
@@ -22,7 +22,7 @@ from .aviso import Avisos, tocar
 from .gravador import Gravador
 from .transcritor import Transcritor
 
-log = logging.getLogger("ditado")
+log = logging.getLogger("cochicho")
 
 TEXTO_DE_TESTE = "Teste do ditado: olá, ação, coração."
 
@@ -64,7 +64,7 @@ class Sessao:
         self._fila.put(None)
 
 
-class Ditado:
+class Cochicho:
     def __init__(self):
         self._trava = threading.RLock()
         self.estado = "parado"
@@ -223,7 +223,7 @@ class Ditado:
             return False
         time.sleep(0.1)  # o GNOME precisa ver a área de transferência nova antes do Ctrl+V
         r = subprocess.run(
-            [sys.executable, "-m", "ditado.portal", self.cfg.colar_com, str(config.TOKEN_PORTAL)],
+            [sys.executable, "-m", "cochicho.portal", self.cfg.colar_com, str(config.TOKEN_PORTAL)],
             capture_output=True, text=True, timeout=120,
         )
         if r.returncode != 0:
@@ -268,7 +268,7 @@ class _Atendente(socketserver.StreamRequestHandler):
     def handle(self):
         comando = self.rfile.readline(200).decode(errors="replace").strip()
         try:
-            resposta = self.server.ditado.executar(comando)
+            resposta = self.server.cochicho.executar(comando)
         except Exception as e:  # noqa: BLE001
             log.exception("falha no comando %s", comando)
             resposta = f"erro: {e}"
@@ -282,7 +282,7 @@ def servir():
         try:
             with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as s:
                 s.connect(str(caminho))
-            log.error("já existe um servidor do ditado rodando em %s", caminho)
+            log.error("já existe um servidor do cochicho rodando em %s", caminho)
             sys.exit(1)
         except (ConnectionRefusedError, FileNotFoundError):
             caminho.unlink(missing_ok=True)
@@ -293,10 +293,10 @@ def servir():
 
     signal.signal(signal.SIGTERM, sair)
     signal.signal(signal.SIGINT, sair)
-    ditado = Ditado()
+    cochicho = Cochicho()
     with socketserver.ThreadingUnixStreamServer(str(caminho), _Atendente) as servidor:
         caminho.chmod(0o600)
         servidor.daemon_threads = True
-        servidor.ditado = ditado
+        servidor.cochicho = cochicho
         log.info("ouvindo em %s", caminho)
         servidor.serve_forever()
